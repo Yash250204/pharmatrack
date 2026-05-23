@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">🏭 Suppliers</h2>
+
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Supplier Name</th>
+            <th>City</th>
+            <th>Contact</th>
+            <th>Email</th>
+            <th>Rating</th>
+            <th>Delivery Days</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in suppliers %}
+        <tr>
+            <td>{{ s.supplier_id }}</td>
+            <td>{{ s.name }}</td>
+            <td>{{ s.city }}</td>
+            <td>{{ s.contact_number }}</td>
+            <td>{{ s.email }}</td>
+            <td>
+                {% if s.rating >= 4.5 %}
+                    <span class="badge bg-success">⭐ {{ s.rating }}</span>
+                {% elif s.rating >= 3.5 %}
+                    <span class="badge bg-warning text-dark">⭐ {{ s.rating }}</span>
+                {% else %}
+                    <span class="badge bg-danger">⭐ {{ s.rating }}</span>
+                {% endif %}
+            </td>
+            <td>{{ s.delivery_time_days }} days</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">🚨 Alerts</h2>
+
+<!-- Restock Alerts Section -->
+<h4 class="mb-3">📦 Restock Alerts</h4>
+
+{% if restock %}
+<table class="table table-bordered table-hover mb-5">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Medicine</th>
+            <th>Warehouse</th>
+            <th>City</th>
+            <th>Current Qty</th>
+            <th>Reorder Level</th>
+            <th>Status</th>
+            <th>Created At</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in restock %}
+        <tr>
+            <td>{{ r.alert_id }}</td>
+            <td>{{ r.medicine_name }}</td>
+            <td>{{ r.warehouse_name }}</td>
+            <td>{{ r.city }}</td>
+            <td>{{ r.current_quantity }}</td>
+            <td>{{ r.reorder_level }}</td>
+            <td>
+                {% if r.alert_status == 'Open' %}
+                    <span class="badge bg-danger">🔴 Open</span>
+                {% elif r.alert_status == 'Ordered' %}
+                    <span class="badge bg-warning text-dark">🟠 Ordered</span>
+                {% else %}
+                    <span class="badge bg-success">🟢 Resolved</span>
+                {% endif %}
+            </td>
+            <td>{{ r.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="alert alert-success">
+    ✅ No restock alerts — all medicines are well stocked!
+</div>
+{% endif %}
+
+<!-- Expiry Watchlist Section -->
+<h4 class="mb-3">⚠️ Expiry Watchlist</h4>
+
+{% if expiry %}
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Medicine</th>
+            <th>Warehouse</th>
+            <th>City</th>
+            <th>Expiry Date</th>
+            <th>Days Left</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for e in expiry %}
+        <tr>
+            <td>{{ e.watch_id }}</td>
+            <td>{{ e.medicine_name }}</td>
+            <td>{{ e.warehouse_name }}</td>
+            <td>{{ e.city }}</td>
+            <td>{{ e.expiry_date }}</td>
+            <td>
+                {% if e.days_to_expiry <= 30 %}
+                    <span class="badge bg-danger">🔴 {{ e.days_to_expiry }} days</span>
+                {% elif e.days_to_expiry <= 60 %}
+                    <span class="badge bg-warning text-dark">🟠 {{ e.days_to_expiry }} days</span>
+                {% else %}
+                    <span class="badge bg-info text-dark">🟡 {{ e.days_to_expiry }} days</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="alert alert-success">
+    ✅ No medicines expiring within 90 days!
+</div>
+{% endif %}
+
+{% endblock %}
